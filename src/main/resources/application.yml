@@ -1,0 +1,27 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: testkafka
+  cloud:
+    stream:
+      bindings:
+        # inputs
+        input:
+          concurrency: 3
+          partitioned: true
+          partition-count: 3
+          group: testkafka
+          destination: topic1,topic2
+          content-type: application/json;charset=UTF-8
+        output:
+          partitioned: true
+          partition-count: 3
+          partition-selector-expression: headers['partitionKey']
+          destination: topic1
+          content-type: application/json;charset=UTF-8
+      kafka:
+        binder:
+          brokers: 192.168.161.99:9092,192.168.161.99:9093,192.168.161.99:9094
+          auto-create-topics: false
+      dynamicDestinations: topic1,topic2
